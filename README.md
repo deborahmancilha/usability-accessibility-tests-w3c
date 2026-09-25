@@ -91,7 +91,7 @@ Os achados de acessibilidade foram registrados em `docs/accessibility-findings.m
 
 ## Varredura Automática
 
-A execução local registrada em [docs/axe-summary.md](docs/axe-summary.md) em 2026-09-25 usou axe-core 4.13.0 via `@axe-core/playwright`, com viewport 1366x768 e URLs efetivas das páginas W3C. Ela registrou 7 violações na versão before e 4 na versão after, com 1 item incompleto em cada página.
+A execução local registrada em [docs/axe-triage.md](docs/axe-triage.md) em 2026-09-25 usou axe-core 4.13.0 via `@axe-core/playwright`, com viewport 1366x768 e URLs efetivas das páginas W3C. Ela registrou 7 violações na versão before e 4 na versão after, com 1 item incompleto em cada página.
 
 Regras com violações na versão before: `html-has-lang`, `image-alt`, `label`, `landmark-one-main`, `link-name`, `region`, `select-name`.
 
@@ -116,8 +116,7 @@ Esse resultado é tratado como triagem automática, não como conclusão final d
 | [Plano do estudo](docs/study-plan.md) | Pergunta, tarefa, escopo e limites da investigação. |
 | [Inspeção de usabilidade](docs/usability-inspection.md) | Avaliação heurística e percurso cognitivo das duas versões. |
 | [Achados de acessibilidade](docs/accessibility-findings.md) | Barreiras selecionadas, impactos possíveis e critérios relacionados. |
-| [Triagem do axe-core](docs/axe-triage.md) | Leitura dos resultados automáticos e pontos que exigem investigação. |
-| [Resumo da varredura axe](docs/axe-summary.md) | Resultado estável da execução usada como referência no README. |
+| [Triagem do axe-core](docs/axe-triage.md) | Execução analisada, resultados por página, decisões de triagem e limites da varredura automática. |
 | [Evidências selecionadas](docs/evidence/) | Capturas estáveis para navegação no GitHub. Os resultados completos continuam em `results/`. |
 
 ## Arquitetura
@@ -280,7 +279,7 @@ Saídas:
 
 Resumo versionável da execução usada neste README:
 
-- `docs/axe-summary.md`
+- `docs/axe-triage.md`
 
 Para falhar o comando quando houver violações:
 
@@ -288,7 +287,7 @@ Para falhar o comando quando houver violações:
 AXE_FAIL_ON_VIOLATIONS=true npm run a11y:axe
 ```
 
-Esse modo usa a existência de qualquer violação como critério de saída. Como o script analisa as versões Before e After, violações em qualquer uma das duas páginas fazem o comando terminar com falha. Use essa opção quando a intenção for bloquear a execução diante de violações automatizadas; para triagem comparativa, leia os JSONs e o resumo em `docs/axe-summary.md`, com data, URL efetiva, versão da ferramenta e regras detectadas.
+Esse modo usa a existência de qualquer violação como critério de saída. Como o script analisa as versões Before e After, violações em qualquer uma das duas páginas fazem o comando terminar com falha. Use essa opção quando a intenção for bloquear a execução diante de violações automatizadas; para triagem comparativa, leia os JSONs e a triagem em `docs/axe-triage.md`, com data, URL efetiva, versão da ferramenta e regras detectadas.
 
 ## Evidências
 

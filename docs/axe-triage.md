@@ -1,21 +1,27 @@
-# Triagem Da Varredura Automática
+# Triagem Da Varredura Axe-Core
 
-## Ferramenta
+Este documento registra, em formato versionável, a execução local usada como referência no README. Os JSONs completos continuam sendo gerados em `results/axe/` e não são versionados.
 
-- Motor: axe-core 4.13.0
-- Integração: `@axe-core/playwright` 4.13.0
-- Playwright: 1.62.1
-- Navegador: Chromium via Playwright
-- Viewport: 1366x768
-- Script: `scripts/run_axe_checks.mjs`
-- Tags executadas: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `best-practice`
+## Execução Analisada
 
-## Resultado Da Última Execução Local
+| Item | Valor |
+| --- | --- |
+| Data da execução | 2026-09-25 |
+| Timestamp before | `2026-09-25T13:48:39.484Z` |
+| Timestamp after | `2026-09-25T13:48:41.245Z` |
+| Ferramenta | axe-core 4.13.0 via `@axe-core/playwright` 4.13.0 |
+| Playwright | 1.62.1 |
+| Navegador | Chromium via Playwright |
+| Viewport | 1366x768 |
+| Script | `scripts/run_axe_checks.mjs` |
+| Tags axe executadas | `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `best-practice` |
 
-Execução registrada nos JSONs em 2026-09-25, com timestamps:
+URLs efetivas avaliadas:
 
-- Before: `2026-09-25T13:48:39.484Z`
-- After: `2026-09-25T13:48:41.245Z`
+- Before: https://www.w3.org/WAI/demos/bad/before/survey.html
+- After: https://www.w3.org/WAI/demos/bad/after/survey.html
+
+## Resultados Por Página
 
 | Página | URL efetiva | Violações | Incompletos | Passes | Regras com violações |
 | --- | --- | --- | --- | --- | --- |
@@ -24,12 +30,28 @@ Execução registrada nos JSONs em 2026-09-25, com timestamps:
 
 Itens incompletos:
 
-| Página | Regra | Impacto | Observação |
+| Página | Regra | Impacto | Decisão de triagem |
 | --- | --- | --- | --- |
-| before | `color-contrast` | serious | Exige verificação manual ou configuração complementar para concluir a análise. |
-| after | `color-contrast` | serious | Exige verificação manual ou configuração complementar para concluir a análise. |
+| before | `color-contrast` | serious | Manter como pendente de verificação manual ou configuração complementar. |
+| after | `color-contrast` | serious | Manter como pendente de verificação manual ou configuração complementar. |
 
-## Como Interpretar
+## Triagem Dos Achados
+
+| Regra ou grupo | Página | Decisão |
+| --- | --- | --- |
+| `label` e `select-name` | before | Entram no recorte de investigação sobre nomes acessíveis, labels e instruções de formulário. |
+| `html-has-lang`, `image-alt`, `link-name`, `landmark-one-main`, `region` | before | Mantidos como achados automáticos para investigação. Não foram todos transformados em achados detalhados nesta versão do estudo. |
+| `empty-table-header`, `label-title-only`, `landmark-one-main`, `region` | after | Mantidos como pontos de triagem. A versão after melhora o fluxo estudado, mas ainda teve violações detectadas pela ferramenta. |
+| `color-contrast` | before e after | Inconclusivo na execução automática. Exige verificação manual ou configuração complementar. |
+
+Entrou em `docs/accessibility-findings.md`:
+
+- A11Y-001: radio buttons do parque sem labels programáticos na versão before.
+- A11Y-002: campos de nome/e-mail sem labels associados na versão before.
+- A11Y-003: grupos de radio sem `fieldset`/`legend` na versão before.
+- A11Y-004: skip link interno levando ao conteúdo do formulário corrigido na versão after.
+
+## Limites E Reprodução
 
 A varredura automática identifica sinais técnicos reproduzíveis. Ela não substitui avaliação humana de teclado, foco, entendimento da tarefa, clareza de instruções e experiência com tecnologia assistiva.
 
@@ -39,24 +61,18 @@ Os achados selecionados no estudo são relacionados à WCAG 2.2 por análise dos
 
 Quando a ferramenta não encontrar violações, a conclusão correta é: `sem violações detectadas pela ferramenta nesta execução`. Não use esse resultado para afirmar conformidade integral com WCAG.
 
-## Triagem Inicial
-
-1. Priorizar violações com impacto `critical` ou `serious` nos JSONs.
-2. Conferir se o problema afeta o fluxo da tarefa definida no estudo.
-3. Relacionar cada achado confirmado a uma evidência Robot, print, JSON axe ou anotação de observação.
-4. Registrar falso positivo ou inconclusivo como `necessita verificação manual`.
-5. Atualizar `docs/accessibility-findings.md` somente com achados interpretados, não apenas copiados da ferramenta.
-
-## Observações Por Página
-
-Before concentra violações diretamente relacionadas ao recorte do estudo, como `label` e `select-name`, que reforçam a investigação sobre nomes acessíveis e instruções de formulário.
-
-After reduz parte dessas barreiras, mas ainda apresenta violações e boas práticas sinalizadas pela ferramenta, como `label-title-only`, `landmark-one-main` e `region`. Esses pontos precisam de triagem própria antes de virarem achado confirmado.
-
-## Comando
+Comando:
 
 ```bash
 npm run a11y:axe
 ```
 
-Para reproduzir a triagem, preserve também `results/axe/before.json`, `results/axe/after.json` e `results/axe/summary.md` da execução analisada. O resumo versionável usado como referência no README está em `docs/axe-summary.md`.
+Para falhar o comando quando houver qualquer violação:
+
+```bash
+AXE_FAIL_ON_VIOLATIONS=true npm run a11y:axe
+```
+
+Esse modo usa a existência de qualquer violação como critério de saída. Como o script analisa as versões before e after, violações em qualquer uma das duas páginas fazem o comando terminar com falha.
+
+Para reproduzir a triagem, preserve também `results/axe/before.json`, `results/axe/after.json` e `results/axe/summary.md` da execução analisada.

@@ -83,4 +83,4 @@ Resultados esperados:
 
 Resumo versionável da execução usada como referência:
 
-- `docs/axe-summary.md`
+- `docs/axe-triage.md`
