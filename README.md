@@ -10,7 +10,7 @@ A W3C apresenta o BAD como um recurso multi-pagina que mostra um site corrompido
 
 ## Origem Academica
 
-A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pos-graduacao em **Engenharia de Qualidade e Teste de Software | PUC Minas**, em andamento, iniciada em 2025.
+A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pos-graduacao em **Engenharia de Qualidade e Teste de Software - PUC Minas**.
 
 ## Pergunta Norteadora
 
