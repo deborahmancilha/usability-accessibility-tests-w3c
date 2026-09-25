@@ -57,6 +57,49 @@ A inspeção foi feita pela autora. As verificações automatizadas cobrem condi
 
 **Percurso cognitivo:** inspeção dos passos de uma tarefa sob a perspectiva de alguém que usa a interface pela primeira vez. Em cada passo, a avaliadora examina se a ação necessária pode ser descoberta e se seu resultado pode ser compreendido.
 
+## Resultados em Usabilidade
+
+A inspeção de usabilidade foi registrada em `docs/usability-inspection.md` e usa duas técnicas complementares: avaliação heurística, guiada pelas heurísticas de Nielsen, e percurso cognitivo da tarefa `responder a pesquisa sobre parques`.
+
+| Achado | Comparação before/after | Evidência |
+| --- | --- | --- |
+| Opções de parque dependem mais do layout na versão before | Before mostra radios e textos próximos, mas sem labels programáticos; after associa cada opção ao texto clicável e ao nome acessível. | `docs/evidence/usability-before-form.png`, `docs/evidence/usability-after-park-selected.png` e suítes Robot |
+| Cidade exige menos inferência na versão after | Before usa tabela visual para aproximar pergunta e select; after agrupa a pergunta em `fieldset`/`legend` e organiza a lista com `optgroup`. | Suítes Robot `w3c_survey_before_usability.robot` e `w3c_survey_after_usability.robot` |
+| Newsletter opcional fica mais compreensível na versão after | Before desalinha campos e textos, deixando a relação entre instrução e input mais fraca; after informa opcionalidade e mantém labels próximos dos campos. | `docs/evidence/usability-after-newsletter-filled.png` |
+| Feedback de término melhora na versão after | Before navega para `survey.php`, mas mostra resultados sem confirmação clara; after exibe mensagem explícita de sucesso e nota sobre a demonstração. | `docs/evidence/usability-before-submit-result.png` e `docs/evidence/usability-after-submit-result.png` |
+
+## Resultados em Acessibilidade
+
+Os achados de acessibilidade foram registrados em `docs/accessibility-findings.md` e relacionam barreiras selecionadas, impactos possíveis, critérios WCAG associados e evidências automatizadas do recorte avaliado.
+
+| Achado | Impacto | Evidência |
+| --- | --- | --- |
+| Before não possui labels no formulário da pesquisa | Campos e opções podem ser anunciados sem nome acessível | Suite Robot `w3c_survey_before_accessibility.robot` |
+| Before não agrupa opções relacionadas com fieldset/legend | A pergunta pode se desconectar das opções para leitor de tela | Suite Robot `w3c_survey_before_accessibility.robot` |
+| After permite preenchimento por nomes acessíveis | O mesmo fluxo fica mais robusto para teclado e tecnologia assistiva | Suite Robot `Preencher Campos Da Versao Corrigida Aceita Entradas Esperadas` |
+| Skip link e destino | Reduz esforço de navegação por teclado e leva ao conteúdo principal | Resultado do teste Robot `Percorrer O Formulario Corrigido Por Teclado Mantem Orientacao De Foco` |
+| Indicador de foco visível | Ajuda a pessoa a perceber onde está durante a navegação por teclado | Planejado: inspeção manual com captura ou descrição do procedimento |
+
+## Varredura Automática
+
+A execução local registrada em `results/axe/` em 2026-09-25 usou axe-core 4.13.0 via `@axe-core/playwright`, com viewport 1366x768 e URLs efetivas das páginas W3C. Ela registrou 7 violações na versão before e 4 na versão after, com 1 item incompleto em cada página.
+
+Regras com violações na versão before: `html-has-lang`, `image-alt`, `label`, `landmark-one-main`, `link-name`, `region`, `select-name`.
+
+Regras com violações na versão after: `empty-table-header`, `label-title-only`, `landmark-one-main`, `region`.
+
+Esse resultado é tratado como triagem automática, não como conclusão final de conformidade. As duas páginas tiveram violações detectadas e exigem interpretação.
+
+## Sugestões de Melhoria
+
+1. Deixar claro o nome e a função de cada campo, para que a pessoa saiba o que preencher mesmo fora do contexto visual da página. Associar todo input a um label programático.
+2. Aproximar perguntas e opções relacionadas, para que a pessoa entenda qual conjunto de respostas pertence a cada pergunta. Agrupar radios e checkboxes com `fieldset` e `legend`.
+3. Facilitar a navegação por teclado até as áreas importantes da página, reduzindo o esforço para chegar ao conteúdo principal. Manter skip links apontando para regiões úteis.
+4. Destacar visualmente onde está o foco durante a navegação por teclado, para que a pessoa não perca orientação durante a tarefa. 
+5. Manter instruções próximas dos campos, para que a pessoa não precise procurar em outra parte da tela o que deve fazer. Posicionar textos de ajuda junto aos controles relacionados.
+6. Informar claramente o resultado de ações importantes, como o envio do formulário, para que a pessoa saiba se a tarefa foi concluída. Exibir uma mensagem de confirmação objetiva após o submit.
+
+
 ## Guia Dos Documentos
 
 | Documento | O que você encontrará |
@@ -65,20 +108,32 @@ A inspeção foi feita pela autora. As verificações automatizadas cobrem condi
 | [Inspeção de usabilidade](docs/usability-inspection.md) | Avaliação heurística e percurso cognitivo das duas versões. |
 | [Achados de acessibilidade](docs/accessibility-findings.md) | Barreiras selecionadas, impactos possíveis e critérios relacionados. |
 | [Triagem do axe-core](docs/axe-triage.md) | Leitura dos resultados automáticos e pontos que exigem investigação. |
-| [Relatório do portfólio](docs/portfolio-report.md) | Síntese do método, dos achados e das recomendações. |
 | [Evidências selecionadas](docs/evidence/) | Capturas estáveis para navegação no GitHub. Os resultados completos continuam em `results/`. |
 
 ## Arquitetura
 
+O projeto separa intenção do teste, orquestração do fluxo e detalhes da página. Assim, os cenários ficam legíveis para QA e os seletores ficam concentrados em um único lugar.
+
 ```text
-Test cases
-  -> Study flow keywords
-  -> Page/component keywords
-  -> Robot Framework Browser
-  -> Playwright
+tests/
+  -> resources/flows/
+    -> resources/pages/
+      -> resources/common/
+        -> Robot Framework Browser
+          -> Playwright
+            -> páginas W3C BAD
 ```
 
-Os testes em `tests/` expressam comportamento verificável. Locators e detalhes de interface ficam em `resources/pages/`. Fluxos do estudo ficam em `resources/flows/`. Configuração de ambiente e URLs ficam em `config/` e `variables/runtime.py`.
+| Camada | Responsabilidade |
+| --- | --- |
+| `tests/` | Declara os cenários do estudo, separados por domínio e versão. Não contém locators. |
+| `resources/flows/` | Orquestra passos da tarefa, como abrir a página, preencher o formulário e registrar evidências. |
+| `resources/pages/` | Centraliza locators, ações e verificações específicas da página Survey. |
+| `resources/common/` | Mantém infraestrutura compartilhada, como abertura de browser, contexto de teste e captura de evidências. |
+| `variables/runtime.py` e `config/` | Resolvem ambiente, URLs e diretórios usados nas execuções. |
+| `scripts/` | Executa ferramentas auxiliares, como a varredura axe-core com Playwright. |
+
+Na prática, um cenário Robot descreve **o que** deve ser observado; os fluxos dizem **como** a tarefa é percorrida; os page resources guardam **onde** cada elemento está na interface. Essa separação reduz duplicação e facilita revisar mudanças no site externo.
 
 ## Estrutura Atual
 
@@ -89,16 +144,23 @@ resources/pages/        locators e verificações da página Survey
 resources/flows/        fluxos do estudo para before/after
 tests/accessibility/    suítes Robot de acessibilidade separadas por before/after
 tests/usability/        suítes Robot de usabilidade separadas por before/after
-docs/                   plano, triagem, achados, relatório e evidências selecionadas
+docs/                   plano, triagem, achados detalhados e evidências selecionadas
 scripts/                execução axe-core
 results/                relatórios gerados, não versionados
 ```
 
 ## Pré-Requisitos
 
-- Python 3.12 ou superior.
-- Node.js 22, 24 ou 26 LTS.
-- Navegadores Playwright instalados via Browser Library.
+- Python 3.12 ou superior, com `venv` e `pip` disponíveis.
+- Node.js 22, 24 ou 26 LTS, com `npm` disponível.
+- Acesso à internet para instalar dependências e executar os testes contra as páginas W3C BAD.
+- Dependências Python do projeto instaladas com `python -m pip install -e ".[dev]"`:
+  `robotframework`, `robotframework-browser`, `robotframework-pabot`, `PyYAML`, `ruff` e `robocop`.
+- Inicialização da Browser Library executada com `python -m Browser.entry init chromium`.
+- Dependências Node instaladas com `npm install`: `playwright` e `@axe-core/playwright`.
+- Navegador Chromium do Playwright instalado com `npx playwright install chromium`.
+
+Os comandos completos estão na seção de instalação abaixo.
 
 ## Instalação
 
@@ -243,6 +305,7 @@ Evidências Robot ficam em `results/`, incluindo `output.xml`, `log.html`, `repo
 - O estudo inicial aprofunda quatro diferenças: labels, agrupamento semântico, teclado/foco e skip links.
 - Esta versão é um estudo pessoal apoiado por automação, inspeção própria e triagem crítica dos resultados.
 - As suítes Robot de usabilidade apoiam e registram evidências da inspeção. A execução delas, sozinha, não avalia se uma pessoa compreenderia a interface.
+- O estudo não apresenta uma declaração de conformidade integral com a WCAG.
 
 ## CI
 
