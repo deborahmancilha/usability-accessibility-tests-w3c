@@ -322,7 +322,9 @@ Evidências Robot ficam em `results/`, incluindo `output.xml`, `log.html`, `repo
 
 ## CI
 
-O workflow `.github/workflows/tests.yml` executa lint, verificações W3C com Robot e axe-core em Pull Requests. Em `main` ou schedule, também executa suítes `regression` via Pabot.
+O workflow `.github/workflows/tests.yml` executa, em pull requests e pushes para `main`, Ruff, Robocop, todas as suítes Robot e `npm run a11y:axe`. A varredura axe roda em modo de triagem: o CI não define `AXE_FAIL_ON_VIOLATIONS=true`, porque as páginas before e after têm violações conhecidas.
+
+Na execução agendada, o workflow roda apenas os cenários marcados com `regression` via Pabot, evitando duplicar a execução completa das suítes. Logs, relatórios e capturas gerados em `results/` são publicados como artefato mesmo quando algum teste falha.
 
 ## Como Criar Novas Verificações
 

@@ -1,4 +1,4 @@
-name: W3C BAD Accessibility Study
+name: W3C BAD Study Checks
 
 on:
   pull_request:
@@ -6,7 +6,10 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "0 8 * * 1-5"
+    - cron: "0 8 * * 1"
+
+permissions:
+  contents: read
 
 jobs:
   lint:
@@ -27,16 +30,23 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
-      - name: Lint Python
+      - name: Ruff
+        id: ruff
+        continue-on-error: true
         run: python -m ruff check variables scripts
 
-      - name: Lint Robot Framework
+      - name: Robocop
+        id: robocop
+        continue-on-error: true
         run: python -m robocop check tests resources variables
 
-  tests:
-    name: Robot And Axe Checks
+      - name: Fail on lint errors
+        if: steps.ruff.outcome == 'failure' || steps.robocop.outcome == 'failure'
+        run: exit 1
+
+  study:
+    name: Robot And Axe
     runs-on: ubuntu-latest
-    needs: lint
     env:
       ENV: w3c
       HEADLESS: "true"
@@ -68,23 +78,44 @@ jobs:
       - name: Initialize Browser Library
         run: python -m Browser.entry init chromium
 
-      - name: Install Playwright browser for axe
+      - name: Install Playwright Chromium for axe-core
         run: npx playwright install chromium
 
-      - name: Run W3C accessibility checks
-        run: python -m robot --outputdir results/w3c --include accessibility tests/accessibility
+      - name: Run all Robot suites
+        id: robot
+        if: github.event_name != 'schedule'
+        continue-on-error: true
+        run: python -m robot --outputdir results/robot tests
 
-      - name: Run axe-core checks
+      - name: Run scheduled regression suite with Pabot
+        id: regression
+        if: github.event_name == 'schedule'
+        continue-on-error: true
+        run: >
+          python -m pabot.pabot
+          --command python -m robot --end-command
+          --processes 4
+          --outputdir results/regression
+          --include regression
+          tests
+
+      - name: Run axe-core triage
+        id: axe
+        continue-on-error: true
         run: npm run a11y:axe
 
-      - name: Run regression on scheduled/main
-        if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
-        run: python -m pabot.pabot --command python -m robot --end-command --processes 4 --outputdir results/regression --include regression tests
-
-      - name: Upload results
+      - name: Upload generated evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: accessibility-results
+          name: w3c-bad-study-results
           path: results/
           if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Fail on study check errors
+        if: >
+          steps.robot.outcome == 'failure' ||
+          steps.regression.outcome == 'failure' ||
+          steps.axe.outcome == 'failure'
+        run: exit 1
