@@ -11,12 +11,12 @@ Test Teardown       Fechar Contexto De Teste
 
 *** Test Cases ***
 Abrir A Pesquisa Com Barreiras Carrega Conteudo Visual Sem Heading Principal Semantico
-    [Tags]    accessibility    regression    w3c    before    opening    barrier
+    [Tags]    accessibility    w3c    before    opening    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Entao A Pesquisa Com Barreiras Deve Exibir Conteudo Visual Sem Heading Principal Semantico
 
 Localizar O Formulario Com Barreiras Exibe Elementos Sem Nomes Acessiveis
-    [Tags]    accessibility    regression    w3c    before    form-discovery    barrier
+    [Tags]    accessibility    w3c    before    form-discovery    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Entao Os Elementos Necessarios Com Barreiras Devem Estar Presentes Sem Nomes Acessiveis
 
@@ -37,6 +37,6 @@ Foco No Formulario Com Barreiras Evidencia Falta De Orientacao Semantica
     Entao O Controle Com Barreiras Deve Evidenciar Falta De Orientacao Semantica
 
 Versao Com Barreiras Evidencia Falta De Rotulos E Grupos Semanticos
-    [Tags]    accessibility    regression    w3c    before    barrier
+    [Tags]    accessibility    w3c    before    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Entao A Versao Com Barreiras Deve Registrar Problemas Objetivos De Rotulagem

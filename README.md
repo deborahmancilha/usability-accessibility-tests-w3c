@@ -10,6 +10,16 @@ Este é um estudo individual. A avaliação heurística e o percurso cognitivo f
 - [Formulário com correções](https://www.w3.org/WAI/demos/bad/after/survey.html)
 - [Sobre a demonstração BAD](https://www.w3.org/WAI/demos/bad/)
 
+## O Que Este Projeto Demonstra
+
+- Planejamento de um estudo com pergunta, tarefa e escopo definidos.
+- Automação em Robot Framework Browser para caracterizar barreiras conhecidas e verificar comportamentos da versão corrigida.
+- Análise de acessibilidade que relaciona testes, resultados do axe-core, critérios WCAG e impacto possível para quem usa o formulário.
+- Inspeção individual de usabilidade com avaliação heurística e percurso cognitivo documentados.
+- Organização de evidências e comunicação de achados para apoiar decisões de melhoria.
+
+**Exemplo de investigação:** as opções de parque na versão Before não expõem o nome acessível esperado. A suíte registra essa condição; a versão After permite localizar e selecionar `Central Park` pelo nome acessível. O [achado A11Y-001](docs/accessibility-findings.md) explica a evidência, o impacto possível e a recomendação.
+
 ## Origem Acadêmica
 
 A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pós-graduação em **Engenharia de Qualidade e Teste de Software - PUC Minas**.
@@ -49,7 +59,7 @@ A inspeção foi feita pela autora. As verificações automatizadas cobrem condi
 
 **W3C:** World Wide Web Consortium, organização internacional que desenvolve padrões para a Web. Sua iniciativa WAI trabalha com padrões e materiais de apoio para acessibilidade.
 
-**WCAG 2.2:** Web Content Accessibility Guidelines, recomendações da W3C com critérios verificáveis para tornar conteúdo Web mais acessível. A demonstração BAD foi construída com referência à WCAG 2.0. Os critérios mencionados neste estudo são conferidos na WCAG 2.2.
+**WCAG 2.2:** Web Content Accessibility Guidelines, recomendações da W3C com critérios verificáveis para tornar conteúdo Web mais acessível. A demonstração BAD foi construída com referência à WCAG 2.0. Os achados selecionados neste estudo são relacionados à WCAG 2.2 por análise dos critérios correspondentes.
 
 **axe-core:** motor de testes automáticos de acessibilidade para interfaces Web. Aqui ele é executado por meio de `@axe-core/playwright` para gerar resultados das duas páginas. Foi escolhido por permitir incorporar regras automáticas ao fluxo de testes e guardar os resultados para triagem.
 
@@ -77,18 +87,17 @@ Os achados de acessibilidade foram registrados em `docs/accessibility-findings.m
 | Before não possui labels no formulário da pesquisa | Campos e opções podem ser anunciados sem nome acessível | Suite Robot `w3c_survey_before_accessibility.robot` |
 | Before não agrupa opções relacionadas com fieldset/legend | A pergunta pode se desconectar das opções para leitor de tela | Suite Robot `w3c_survey_before_accessibility.robot` |
 | After permite preenchimento por nomes acessíveis | O mesmo fluxo fica mais robusto para teclado e tecnologia assistiva | Suite Robot `Preencher Campos Da Versao Corrigida Aceita Entradas Esperadas` |
-| Skip link e destino | Reduz esforço de navegação por teclado e leva ao conteúdo principal | Resultado do teste Robot `Percorrer O Formulario Corrigido Por Teclado Mantem Orientacao De Foco` |
-| Indicador de foco visível | Ajuda a pessoa a perceber onde está durante a navegação por teclado | Planejado: inspeção manual com captura ou descrição do procedimento |
+| Skip link e destino | Reduz esforço de navegação por teclado e leva ao conteúdo principal | Resultado do teste Robot `Skip Link Interno Leva Ao Conteudo Do Formulario Corrigido` |
 
 ## Varredura Automática
 
-A execução local registrada em `results/axe/` em 2026-09-25 usou axe-core 4.13.0 via `@axe-core/playwright`, com viewport 1366x768 e URLs efetivas das páginas W3C. Ela registrou 7 violações na versão before e 4 na versão after, com 1 item incompleto em cada página.
+A execução local registrada em [docs/axe-summary.md](docs/axe-summary.md) em 2026-09-25 usou axe-core 4.13.0 via `@axe-core/playwright`, com viewport 1366x768 e URLs efetivas das páginas W3C. Ela registrou 7 violações na versão before e 4 na versão after, com 1 item incompleto em cada página.
 
 Regras com violações na versão before: `html-has-lang`, `image-alt`, `label`, `landmark-one-main`, `link-name`, `region`, `select-name`.
 
 Regras com violações na versão after: `empty-table-header`, `label-title-only`, `landmark-one-main`, `region`.
 
-Esse resultado é tratado como triagem automática, não como conclusão final de conformidade. As duas páginas tiveram violações detectadas e exigem interpretação.
+Esse resultado é tratado como triagem automática, não como conclusão final de conformidade. As duas páginas tiveram violações detectadas e exigem interpretação. A execução do axe usou as tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` e `best-practice`; os achados selecionados são relacionados à WCAG 2.2 por análise, não por uma varredura automática completa de toda a WCAG 2.2.
 
 ## Sugestões de Melhoria
 
@@ -108,6 +117,7 @@ Esse resultado é tratado como triagem automática, não como conclusão final d
 | [Inspeção de usabilidade](docs/usability-inspection.md) | Avaliação heurística e percurso cognitivo das duas versões. |
 | [Achados de acessibilidade](docs/accessibility-findings.md) | Barreiras selecionadas, impactos possíveis e critérios relacionados. |
 | [Triagem do axe-core](docs/axe-triage.md) | Leitura dos resultados automáticos e pontos que exigem investigação. |
+| [Resumo da varredura axe](docs/axe-summary.md) | Resultado estável da execução usada como referência no README. |
 | [Evidências selecionadas](docs/evidence/) | Capturas estáveis para navegação no GitHub. Os resultados completos continuam em `results/`. |
 
 ## Arquitetura
@@ -268,13 +278,17 @@ Saídas:
 - `results/axe/after.json`
 - `results/axe/summary.md`
 
+Resumo versionável da execução usada neste README:
+
+- `docs/axe-summary.md`
+
 Para falhar o comando quando houver violações:
 
 ```bash
 AXE_FAIL_ON_VIOLATIONS=true npm run a11y:axe
 ```
 
-Use essa opção com cuidado na versão Before: ela pode fazer o comando falhar diante das barreiras que o estudo espera encontrar. Para triagem comparativa, a contagem precisa vir acompanhada de data, URL efetiva, versão da ferramenta e regras detectadas.
+Esse modo usa a existência de qualquer violação como critério de saída. Como o script analisa as versões Before e After, violações em qualquer uma das duas páginas fazem o comando terminar com falha. Use essa opção quando a intenção for bloquear a execução diante de violações automatizadas; para triagem comparativa, leia os JSONs e o resumo em `docs/axe-summary.md`, com data, URL efetiva, versão da ferramenta e regras detectadas.
 
 ## Evidências
 

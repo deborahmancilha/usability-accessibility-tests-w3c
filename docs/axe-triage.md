@@ -35,6 +35,8 @@ A varredura automática identifica sinais técnicos reproduzíveis. Ela não sub
 
 As duas páginas tiveram violações detectadas. A diferença numérica entre before e after ajuda a orientar a investigação, mas não deve ser usada como declaração de conformidade ou aprovação.
 
+Os achados selecionados no estudo são relacionados à WCAG 2.2 por análise dos critérios correspondentes. A execução do axe-core registrada aqui usou as tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` e `best-practice`; isso não equivale a uma varredura automática completa de toda a WCAG 2.2.
+
 Quando a ferramenta não encontrar violações, a conclusão correta é: `sem violações detectadas pela ferramenta nesta execução`. Não use esse resultado para afirmar conformidade integral com WCAG.
 
 ## Triagem Inicial
@@ -57,4 +59,4 @@ After reduz parte dessas barreiras, mas ainda apresenta violações e boas prát
 npm run a11y:axe
 ```
 
-Para reproduzir a triagem, preserve também `results/axe/before.json`, `results/axe/after.json` e `results/axe/summary.md` da execução analisada.
+Para reproduzir a triagem, preserve também `results/axe/before.json`, `results/axe/after.json` e `results/axe/summary.md` da execução analisada. O resumo versionável usado como referência no README está em `docs/axe-summary.md`.
