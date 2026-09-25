@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=78"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "w3c-bad-form-a11y-study"
+version = "0.1.0"
+description = "Estudo de usabilidade e acessibilidade do formulario W3C BAD com Robot Framework Browser, Playwright e axe-core."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "PyYAML==6.0.3",
+    "robotframework==7.4.2",
+    "robotframework-browser==20.3.0",
+    "robotframework-pabot==5.2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "robotframework-robocop==8.8.0",
+    "ruff==0.15.22",
+]
+
+[tool.setuptools]
+packages = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.robocop]
+target-version = 7
+
+[tool.robocop.lint]
+ignore = ["*doc*", "TAG05"]

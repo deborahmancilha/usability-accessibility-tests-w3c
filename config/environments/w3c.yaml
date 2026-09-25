@@ -1,0 +1,4 @@
+base_url: https://www.w3.org/WAI/demos/bad/after/survey.html
+w3c:
+  before_url: https://www.w3.org/WAI/demos/bad/before/survey.html
+  after_url: https://www.w3.org/WAI/demos/bad/after/survey.html

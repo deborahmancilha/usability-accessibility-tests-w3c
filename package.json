@@ -1,0 +1,14 @@
+{
+  "name": "w3c-form-a11y-usability-study",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Automated accessibility evidence for the W3C BAD survey form study.",
+  "type": "module",
+  "scripts": {
+    "a11y:axe": "node scripts/run_axe_checks.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "playwright": "1.62.1"
+  }
+}
