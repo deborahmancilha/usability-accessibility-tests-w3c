@@ -6,7 +6,7 @@ Estudo pessoal de usabilidade e acessibilidade no preenchimento de formularios, 
 - Formulario com correcoes: https://www.w3.org/WAI/demos/bad/after/survey.html
 - Overview W3C BAD: https://www.w3.org/WAI/demos/bad/Overview.html
 
-A W3C apresenta o BAD como um recurso multi-pagina que mostra um site inacessivel e uma versao corrigida. O proprio material observa que a demonstracao cobre apenas parte das barreiras possiveis, entao este projeto combina estudo pessoal, automacao e analise critica dos resultados.
+A W3C apresenta o BAD como um recurso multi-pagina que mostra um site corrompido e uma versao corrigida. O proprio material observa que a demonstracao cobre apenas parte das barreiras possiveis, entao este projeto combina estudo pessoal, automacao e analise critica dos resultados.
 
 ## Origem Academica
 
