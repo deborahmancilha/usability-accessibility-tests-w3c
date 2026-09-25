@@ -16,22 +16,22 @@ Abrir A Pesquisa Com Barreiras Carrega Conteudo Visual Sem Heading Principal Sem
     Entao A Pesquisa Com Barreiras Deve Exibir Conteudo Visual Sem Heading Principal Semantico
 
 Localizar O Formulario Com Barreiras Exibe Elementos Sem Nomes Acessiveis
-    [Tags]    accessibility    regression    usability    w3c    before    form-discovery    barrier
+    [Tags]    accessibility    regression    w3c    before    form-discovery    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Entao Os Elementos Necessarios Com Barreiras Devem Estar Presentes Sem Nomes Acessiveis
 
 Preencher Campos Da Versao Com Barreiras Nao E Suportado Por Nomes Acessiveis
-    [Tags]    usability    accessibility    e2e    w3c    before    form-fill    barrier
+    [Tags]    accessibility    e2e    w3c    before    form-fill    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Entao A Versao Com Barreiras Deve Evidenciar Que Nomes Acessiveis Nao Suportam Preenchimento
 
 Skip Link Interno Para Conteudo Nao Esta Disponivel Na Versao Com Barreiras
-    [Tags]    usability    keyboard    accessibility    w3c    before    skip-link    barrier
+    [Tags]    keyboard    accessibility    w3c    before    skip-link    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Entao A Versao Com Barreiras Nao Deve Expor Skip Link Interno Para Conteudo
 
 Foco No Formulario Com Barreiras Evidencia Falta De Orientacao Semantica
-    [Tags]    usability    keyboard    accessibility    w3c    before    focus-order    barrier
+    [Tags]    keyboard    accessibility    w3c    before    focus-order    barrier
     Dado Que Abro O Formulario W3C Com Barreiras
     Quando Foco Um Controle Do Formulario Com Barreiras
     Entao O Controle Com Barreiras Deve Evidenciar Falta De Orientacao Semantica

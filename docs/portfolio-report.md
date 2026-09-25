@@ -1,86 +1,94 @@
-# Relatorio Curto - Usabilidade E Acessibilidade Do Formulario W3C BAD
+# Relatório Curto - Usabilidade E Acessibilidade Do Formulário W3C BAD
 
-## Contexto Academico
+## Contexto Acadêmico
 
-A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pos-graduacao em **Engenharia de Qualidade e Teste de Software | PUC Minas**.
+A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pós-graduação em **Engenharia de Qualidade e Teste de Software | PUC Minas**.
 
 ## Contexto Do Estudo
 
-Este estudo compara duas versoes da pagina Citylights Survey da demonstracao W3C Before and After Demonstration. A W3C descreve o material como uma demonstracao de um site inacessivel e uma versao corrigida, com relatorios e anotacoes para apoiar aprendizado e avaliacao.
+Este estudo compara duas versões da página Citylights Survey da demonstração W3C Before and After Demonstration. A W3C descreve o material como uma demonstração de uma versão inacessível e uma versão corrigida, com relatórios e anotações para apoiar aprendizado e avaliação.
 
 ## Natureza Do Estudo
 
-Esta versao e um estudo pessoal, baseado em inspecao propria, automacao e triagem critica dos resultados gerados.
+Esta versão é um estudo pessoal, baseado em inspeção própria, automação e triagem crítica dos resultados gerados. Não houve sessões com participantes.
 
 ## Pergunta Norteadora
 
-Uma pessoa consegue encontrar, compreender e preencher o formulario usando mouse e teclado, sem perder a orientacao sobre os campos e suas instrucoes?
+Uma pessoa consegue encontrar, compreender e preencher o formulário usando mouse e teclado, sem perder a orientação sobre os campos e suas instruções?
 
 ## Escopo
 
-- Formulario com barreiras: https://www.w3.org/WAI/demos/bad/before/survey.html
-- Formulario com correcoes: https://www.w3.org/WAI/demos/bad/after/survey.html
-- Fluxo avaliado: localizar o formulario, escolher parque, selecionar cidade e preencher dados opcionais da newsletter.
+- Formulário com barreiras: https://www.w3.org/WAI/demos/bad/before/survey.html
+- Formulário com correções: https://www.w3.org/WAI/demos/bad/after/survey.html
+- Fluxo avaliado: localizar o formulário, escolher parque, selecionar cidade, preencher dados opcionais da newsletter e enviar a pesquisa.
 
-## Metodo
+## Método
 
-### Ja Executado
+### Já Executado
 
-1. Foi realizada uma avaliacao heuristica e um percurso cognitivo do preenchimento do formulario pela QA.
-2. Os achados foram documentados com capturas de tela e comparados as verificacoes tecnicas de acessibilidade.
-3. Inspecao tecnica de labels, grupos semanticos, teclado e foco via Robot Framework Browser.
-4. Automacao de verificacoes repetiveis nos cenarios definidos.
-5. Execucao axe-core para gerar relatorio automatico complementar.
-6. Triagem inicial dos resultados automatizados antes de citar impacto ou criterio WCAG.
+1. Avaliação heurística e percurso cognitivo do preenchimento do formulário pela QA.
+2. Registro de telas e comparação com verificações técnicas de acessibilidade.
+3. Inspeção técnica de labels, grupos semânticos, teclado e foco via Robot Framework Browser.
+4. Automação de verificações repetíveis nos cenários definidos.
+5. Execução axe-core para gerar relatório automático complementar.
+6. Triagem inicial dos resultados automatizados antes de citar impacto ou critério WCAG.
 
-### Planejado / Nao Executado Nesta Versao
+### Planejado / Não Executado Nesta Versão
 
-1. Inspecao visual manual documentada do indicador de foco visivel, com captura ou descricao passo a passo.
-2. Revisao manual mais profunda com leitor de tela.
-3. Ampliacao da comparacao com outros fluxos do W3C BAD.
+1. Inspeção visual manual documentada do indicador de foco visível, com captura ou descrição passo a passo.
+2. Revisão manual mais profunda com leitor de tela.
+3. Ampliação da comparação com outros fluxos do W3C BAD.
 
-## Cenarios Robot
+## Interpretação Das Suítes
 
-| Cenario | Evidencia |
-| ------- | --------- |
-| Abrir a pesquisa | Conteudo principal e formulario carregam |
-| Localizar o formulario | Controles necessarios estao presentes e possuem estrutura semantica na versao after |
-| Preencher campos da versao corrigida | Controles aceitam entradas esperadas |
-| Percorrer o formulario por teclado | Foco e operacao por teclado sao verificaveis |
+| Suíte | Como interpretar `PASS` |
+| --- | --- |
+| Before | A barreira ou condição problemática esperada foi detectada. Isso não significa aprovação de acessibilidade. |
+| After | O comportamento corrigido escolhido para o estudo foi observado. |
+| Usabilidade Robot | A automação percorreu a tarefa e gerou evidências reprodutíveis para apoiar a inspeção. Ela não substitui julgamento humano. |
+| axe-core | A ferramenta executou regras automáticas e gerou achados para triagem. Ela não declara conformidade WCAG completa. |
 
-## Inspecao De Usabilidade
+Se a W3C corrigir uma barreira da versão Before, um teste que espera encontrá-la pode falhar por uma mudança positiva. Antes de atualizar expectativas, é necessário revisar o achado e a evidência.
 
-A inspecao de usabilidade foi registrada em `docs/usability-inspection.md` e usa duas tecnicas complementares: avaliacao heuristica, guiada pelas heuristicas de Nielsen, e percurso cognitivo da tarefa `responder a pesquisa sobre parques`.
+## Inspeção De Usabilidade
 
-| Achado | Comparacao before/after | Evidencia |
-| ------ | ----------------------- | --------- |
-| Opcoes de parque dependem mais do layout na versao before | Before mostra radios e textos proximos, mas sem labels programaticos; after associa cada opcao ao texto clicavel e ao nome acessivel. | `results/screenshots/usability-before-form.png` e `results/screenshots/usability-after-park-selected.png` |
-| Cidade exige menos inferencia na versao after | Before usa tabela visual para aproximar pergunta e select; after agrupa a pergunta em `fieldset`/`legend` e organiza a lista com `optgroup`. | Suites Robot `w3c_survey_before_usability.robot` e `w3c_survey_after_usability.robot` |
-| Newsletter opcional fica mais compreensivel na versao after | Before desalinha campos e textos, deixando a relacao entre instrucao e input mais fraca; after informa opcionalidade e mantem labels proximos dos campos. | `results/screenshots/usability-after-newsletter-filled.png` |
-| Feedback de termino ainda e limitado | As duas versoes enviam para `survey.php`, mas nao exibem uma mensagem forte de confirmacao de sucesso. | Percurso cognitivo documentado em `docs/usability-inspection.md` |
+A inspeção de usabilidade foi registrada em `docs/usability-inspection.md` e usa duas técnicas complementares: avaliação heurística, guiada pelas heurísticas de Nielsen, e percurso cognitivo da tarefa `responder a pesquisa sobre parques`.
 
-## Principais Achados
+| Achado | Comparação before/after | Evidência |
+| --- | --- | --- |
+| Opções de parque dependem mais do layout na versão before | Before mostra radios e textos próximos, mas sem labels programáticos; after associa cada opção ao texto clicável e ao nome acessível. | `docs/evidence/usability-before-form.png`, `docs/evidence/usability-after-park-selected.png` e suítes Robot |
+| Cidade exige menos inferência na versão after | Before usa tabela visual para aproximar pergunta e select; after agrupa a pergunta em `fieldset`/`legend` e organiza a lista com `optgroup`. | Suítes Robot `w3c_survey_before_usability.robot` e `w3c_survey_after_usability.robot` |
+| Newsletter opcional fica mais compreensível na versão after | Before desalinha campos e textos, deixando a relação entre instrução e input mais fraca; after informa opcionalidade e mantém labels próximos dos campos. | `docs/evidence/usability-after-newsletter-filled.png` |
+| Feedback de término melhora na versão after | Before navega para `survey.php`, mas mostra resultados sem confirmação clara; after exibe mensagem explícita de sucesso e nota sobre a demonstração. | `docs/evidence/usability-before-submit-result.png` e `docs/evidence/usability-after-submit-result.png` |
 
-| Achado | Impacto | Evidencia |
-| ------ | ------- | --------- |
-| Before nao possui labels no formulario da pesquisa | Campos e opcoes podem ser anunciados sem nome acessivel | Suite Robot `w3c_survey_before_accessibility.robot` |
-| Before nao agrupa opcoes relacionadas com fieldset/legend | A pergunta pode se desconectar das opcoes para leitor de tela | Suite Robot `w3c_survey_before_accessibility.robot` |
-| After permite preenchimento por nomes acessiveis | O mesmo fluxo fica mais robusto para teclado e tecnologia assistiva | Suite Robot `Preencher Campos Da Versao Corrigida Aceita Entradas Esperadas` |
-| Skip link e destino | Reduz esforco de navegacao por teclado e leva ao conteudo principal | Resultado do teste Robot `Percorrer O Formulario Corrigido Por Teclado Mantem Orientacao De Foco` |
-| Indicador de foco visivel | Ajuda a pessoa a perceber onde esta durante a navegacao por teclado | Planejado: inspecao manual com captura ou descricao do procedimento |
+## Principais Achados De Acessibilidade
 
-## Varredura Automatica
+| Achado | Impacto | Evidência |
+| --- | --- | --- |
+| Before não possui labels no formulário da pesquisa | Campos e opções podem ser anunciados sem nome acessível | Suite Robot `w3c_survey_before_accessibility.robot` |
+| Before não agrupa opções relacionadas com fieldset/legend | A pergunta pode se desconectar das opções para leitor de tela | Suite Robot `w3c_survey_before_accessibility.robot` |
+| After permite preenchimento por nomes acessíveis | O mesmo fluxo fica mais robusto para teclado e tecnologia assistiva | Suite Robot `Preencher Campos Da Versao Corrigida Aceita Entradas Esperadas` |
+| Skip link e destino | Reduz esforço de navegação por teclado e leva ao conteúdo principal | Resultado do teste Robot `Percorrer O Formulario Corrigido Por Teclado Mantem Orientacao De Foco` |
+| Indicador de foco visível | Ajuda a pessoa a perceber onde está durante a navegação por teclado | Planejado: inspeção manual com captura ou descrição do procedimento |
 
-A ultima execucao local do axe-core registrou 7 violacoes na versao before e 4 na versao after, com 1 item incompleto em cada pagina. Isso e tratado como triagem automatica, nao como conclusao final de conformidade.
+## Varredura Automática
 
-## Recomendacoes
+A execução local registrada em `results/axe/` em 2026-09-25 usou axe-core 4.13.0 via `@axe-core/playwright`, com viewport 1366x768 e URLs efetivas das páginas W3C. Ela registrou 7 violações na versão before e 4 na versão after, com 1 item incompleto em cada página.
 
-1. Associar todo input a um label programatico.
+Regras com violações na versão before: `html-has-lang`, `image-alt`, `label`, `landmark-one-main`, `link-name`, `region`, `select-name`.
+
+Regras com violações na versão after: `empty-table-header`, `label-title-only`, `landmark-one-main`, `region`.
+
+Esse resultado é tratado como triagem automática, não como conclusão final de conformidade. As duas páginas tiveram violações detectadas e exigem interpretação.
+
+## Recomendações
+
+1. Associar todo input a um label programático.
 2. Agrupar radios/checkboxes relacionados com fieldset e legend.
-3. Manter skip links apontando para regioes uteis.
-4. Registrar manualmente o indicador de foco visivel em uma proxima iteracao.
-5. Usar axe-core como triagem, nao como unica fonte de verdade.
+3. Manter skip links apontando para regiões úteis.
+4. Registrar manualmente o indicador de foco visível em uma próxima iteração.
+5. Usar axe-core como triagem, não como única fonte de verdade.
 
 ## Limites
 
-A demonstracao W3C BAD foi criada com referencia a WCAG 2.0. Este relatorio usa os relatorios originais como apoio e confere criterios correspondentes na WCAG 2.2 antes de citar criterio atual. Ferramentas automaticas podem deixar verificacoes sem resposta e produzir resultado impreciso; por isso, `sem violacoes detectadas` nunca deve ser traduzido como conformidade integral.
+A demonstração W3C BAD foi criada com referência à WCAG 2.0. Este relatório usa os relatórios originais como apoio e confere critérios correspondentes na WCAG 2.2 antes de citar critério atual. Ferramentas automáticas podem deixar verificações sem resposta e produzir resultado impreciso; por isso, `sem violações detectadas` nunca deve ser traduzido como conformidade integral.

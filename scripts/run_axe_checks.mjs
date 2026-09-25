@@ -7,6 +7,7 @@ const beforeUrl = process.env.W3C_BEFORE_URL ?? "https://www.w3.org/WAI/demos/ba
 const afterUrl = process.env.W3C_AFTER_URL ?? "https://www.w3.org/WAI/demos/bad/after/survey.html";
 const outputDir = process.env.AXE_OUTPUT_DIR ?? path.join("results", "axe");
 const failOnViolations = process.env.AXE_FAIL_ON_VIOLATIONS === "true";
+const startedAt = new Date().toISOString();
 
 const targets = [
   { name: "before", url: beforeUrl },
@@ -39,10 +40,18 @@ try {
     summary.push({
       page: target.name,
       url: target.url,
+      testedUrl: results.url,
+      timestamp: results.timestamp,
+      engine: `${results.testEngine.name} ${results.testEngine.version}`,
+      runner: results.testRunner.name,
+      userAgent: results.testEnvironment.userAgent,
+      viewport: `${results.testEnvironment.windowWidth}x${results.testEnvironment.windowHeight}`,
       violations: results.violations.length,
       incomplete: results.incomplete.length,
       passes: results.passes.length,
       impactCounts,
+      violationRules: results.violations.map((violation) => violation.id),
+      incompleteRules: results.incomplete.map((item) => item.id),
       file,
     });
 
@@ -55,14 +64,25 @@ try {
 const markdown = [
   "# Axe Accessibility Summary",
   "",
-  "| Page | Violations | Incomplete | Passes | Impact summary | JSON |",
-  "| ---- | ---------- | ---------- | ------ | -------------- | ---- |",
+  `Execution started: ${startedAt}`,
+  "",
+  "| Page | URL | Tool | Viewport | Violations | Incomplete | Passes | Impact summary | Rules with violations | JSON |",
+  "| ---- | --- | ---- | -------- | ---------- | ---------- | ------ | -------------- | --------------------- | ---- |",
   ...summary.map((item) => {
     const impacts = Object.entries(item.impactCounts)
       .map(([impact, count]) => `${impact}: ${count}`)
       .join(", ") || "none";
-    return `| ${item.page} | ${item.violations} | ${item.incomplete} | ${item.passes} | ${impacts} | ${item.file} |`;
+    const rules = item.violationRules.join(", ") || "none";
+    return `| ${item.page} | ${item.testedUrl} | ${item.engine} via ${item.runner} | ${item.viewport} | ${item.violations} | ${item.incomplete} | ${item.passes} | ${impacts} | ${rules} | ${item.file} |`;
   }),
+  "",
+  "Incomplete rules:",
+  "",
+  ...summary.map((item) => `- ${item.page}: ${item.incompleteRules.join(", ") || "none"}`),
+  "",
+  "User agents:",
+  "",
+  ...summary.map((item) => `- ${item.page}: ${item.userAgent}`),
   "",
   "Note: axe automatiza parte da avaliacao. Achados manuais de teclado, foco, linguagem e usabilidade continuam necessarios.",
   "",

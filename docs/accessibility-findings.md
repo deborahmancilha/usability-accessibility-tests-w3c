@@ -14,6 +14,12 @@ Arquivo para documentar achados manuais e automatizados nas paginas W3C BAD.
 
 A demonstracao W3C BAD foi criada com referencia a WCAG 2.0. Neste projeto, os achados sao comparados com a WCAG 2.2 antes de citar criterio atual. Os criterios citados abaixo continuam existindo na WCAG 2.2.
 
+## Como Interpretar A Suite Before
+
+As verificacoes da versao before sao caracterizacoes de barreiras conhecidas. Quando um teste before passa, a leitura correta e: a barreira esperada foi detectada na pagina avaliada.
+
+Esse resultado nao significa que a pagina before esteja aprovada em acessibilidade. Se a W3C corrigir uma dessas barreiras, o teste que esperava encontra-la pode falhar por uma mudanca positiva e exigir revisao do achado.
+
 ## Recorte De Achados
 
 | ID | Versao | Evidencia | Impacto | WCAG 2.2 relacionada | Prioridade | Recomendacao | Status |

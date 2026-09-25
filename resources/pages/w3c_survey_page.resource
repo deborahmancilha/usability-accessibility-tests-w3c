@@ -4,6 +4,7 @@ Library     Browser    timeout=${BROWSER_TIMEOUT}    enable_playwright_debug=${F
 
 *** Variables ***
 ${SURVEY_FORM}                     css=form[action="survey.php"]
+${SURVEY_PAGE_BODY}                css=body
 ${SURVEY_LABELS}                   css=form[action="survey.php"] label
 ${SURVEY_FIELDSETS}                css=form[action="survey.php"] fieldset
 ${SURVEY_LEGENDS}                  css=form[action="survey.php"] legend
@@ -26,6 +27,10 @@ ${SUBMIT_BUTTON}                   css=form[action="survey.php"] input[type="sub
 ${SURVEY_REQUIRED_NOTE}            text="Fields are required if not otherwise noted."
 ${SURVEY_NEWSLETTER_LEGEND}        text="Free Newsletter (optional)"
 ${SURVEY_RESULTS_HEADING}          css=#surveyresults
+${SURVEY_COMPLETED_HEADING}        role=heading[name="Citylights Survey - Submission Completed"]
+${SURVEY_RESULTS_TEXT}             Last Weeks's Survey Results
+${SURVEY_SUCCESS_MESSAGE}          Thank you for submitting your vote, it has been successfully recorded.
+${SURVEY_DEMO_SUBMISSION_NOTE}     Note: this submission is part of the Demo;
 ${BEFORE_SURVEY_VISUAL_TITLE}      css=#main .headline >> nth=0
 ${BEFORE_META_SKIP_LINK}           role=link[name="Skip to inaccessible demo page"]
 ${BEFORE_PARK_RADIOS}              css=form[action="survey.php"] input[name="res"]
@@ -205,14 +210,34 @@ Enviar Pesquisa Corrigida
     Click    ${SUBMIT_BUTTON}
     Wait For Load State    domcontentloaded
 
+Enviar Pesquisa Com Barreiras
+    Click    ${SUBMIT_BUTTON}
+    Wait For Load State    domcontentloaded
+
 Envio Deve Manter A Pessoa No Resultado Esperado
     ${url}=    Get Url
     Should Contain    ${url}    survey.php
-    Get Element Count    ${SURVEY_RESULTS_HEADING}    ==    1
+    ${body_text}=    Get Text    ${SURVEY_PAGE_BODY}
+    Get Element Count    ${SURVEY_COMPLETED_HEADING}    ==    1
+    Should Contain    ${body_text}    ${SURVEY_SUCCESS_MESSAGE}
+    Should Contain    ${body_text}    ${SURVEY_DEMO_SUBMISSION_NOTE}
+
+Envio Com Barreiras Deve Levar A Resultado Sem Confirmacao Clara
+    ${url}=    Get Url
+    Should Contain    ${url}    survey.php
+    ${body_text}=    Get Text    ${SURVEY_PAGE_BODY}
+    Should Contain    ${body_text}    ${SURVEY_RESULTS_TEXT}
+    Should Not Contain    ${body_text}    ${SURVEY_SUCCESS_MESSAGE}
 
 Capturar Tela Do Formulario
     [Arguments]    ${nome_arquivo}
     Evaluate JavaScript    ${SURVEY_FORM}    (element) => element.scrollIntoView({block: 'start'})
+    Take Screenshot
+    ...    filename=${RESULTS_DIR}${/}screenshots${/}${nome_arquivo}.png
+    ...    fullPage=${True}
+
+Capturar Tela Da Pagina
+    [Arguments]    ${nome_arquivo}
     Take Screenshot
     ...    filename=${RESULTS_DIR}${/}screenshots${/}${nome_arquivo}.png
     ...    fullPage=${True}

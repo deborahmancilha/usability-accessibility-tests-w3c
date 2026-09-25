@@ -1,31 +1,72 @@
-# W3C | Testes de usabilidade e acessibilidade
+# Estudo de usabilidade e acessibilidade do formulário W3C BAD
 
-Estudo pessoal de usabilidade e acessibilidade no preenchimento de formularios, comparando duas versoes da mesma pagina da demonstracao W3C Before and After Demonstration.
+Projeto pessoal de QA que investiga como diferenças na estrutura de um formulário afetam sua operação e a clareza da tarefa. O estudo compara as versões com barreiras intencionais e com correções da página Survey da demonstração Before and After Demonstration (BAD), mantida pela W3C.
 
-- Formulario com barreiras: https://www.w3.org/WAI/demos/bad/before/survey.html
-- Formulario com correcoes: https://www.w3.org/WAI/demos/bad/after/survey.html
-- Overview W3C BAD: https://www.w3.org/WAI/demos/bad/Overview.html
+O projeto combina inspeção de usabilidade, verificações automatizadas com Robot Framework Browser e triagem de acessibilidade com axe-core. Seu objetivo é relacionar cada achado a uma evidência observável, explicar seu possível impacto e mostrar quais verificações podem ser repetidas ao longo do tempo.
 
-A W3C apresenta o BAD como um recurso multi-pagina que mostra um site corrompido e uma versao corrigida. O proprio material observa que a demonstracao cobre apenas parte das barreiras possiveis, entao este projeto combina estudo pessoal, automacao e analise critica dos resultados.
+Este é um estudo individual. A avaliação heurística e o percurso cognitivo foram conduzidos pela autora, sem sessões com participantes. As conclusões de usabilidade são resultados dessa inspeção.
 
-## Origem Academica
+- [Formulário com barreiras](https://www.w3.org/WAI/demos/bad/before/survey.html)
+- [Formulário com correções](https://www.w3.org/WAI/demos/bad/after/survey.html)
+- [Sobre a demonstração BAD](https://www.w3.org/WAI/demos/bad/)
 
-A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pos-graduacao em **Engenharia de Qualidade e Teste de Software - PUC Minas**.
+## Origem Acadêmica
+
+A ideia deste projeto surgiu dos estudos da disciplina **Testes de Usabilidade e Acessibilidade**, da minha pós-graduação em **Engenharia de Qualidade e Teste de Software - PUC Minas**.
 
 ## Pergunta Norteadora
 
-Uma pessoa consegue encontrar, compreender e preencher o formulario usando mouse e teclado, sem perder a orientacao sobre os campos e suas instrucoes?
+Uma pessoa consegue encontrar, compreender e preencher o formulário usando mouse e teclado, sem perder a orientação sobre os campos e suas instruções?
 
-## Entregas Do Projeto
+## Por Que Comparar Before E After?
 
-| Parte | O que sera feito | Evidencia |
-| ----- | ---------------- | --------- |
-| Planejamento | Definir objetivo, roteiro, recorte e limites | `docs/study-plan.md` |
-| Inspecao de usabilidade | Avaliacao heuristica e percurso cognitivo do formulario | `docs/usability-inspection.md` e `tests/usability/` |
-| Avaliacao de acessibilidade | Inspecionar labels, teclado, foco, grupos e axe-core | `docs/accessibility-findings.md` e `results/axe/` |
-| Automacao | Repetir verificacoes objetivas nas duas versoes | Suites Robot, logs, screenshots e relatorios |
-| Triagem automatica | Interpretar resultados axe-core sem afirmar conformidade integral | `docs/axe-triage.md` |
-| Comunicacao | Explicar impacto, prioridade e recomendacoes | `docs/portfolio-report.md` |
+A versão Before contém barreiras introduzidas na demonstração. Ela permite verificar se os testes conseguem detectar condições problemáticas conhecidas, como a falta de nomes acessíveis em controles selecionados.
+
+A versão After permite examinar as soluções correspondentes e percorrer a mesma tarefa por controles identificados de forma acessível.
+
+Um teste aprovado na suíte Before significa que a condição esperada foi observada. Ele não representa aprovação da acessibilidade daquela página. Como o projeto examina um site externo, mudanças nas páginas exigem nova análise antes de atualizar as expectativas dos testes.
+
+| Suíte | O que verifica | O que significa um teste aprovado |
+| --- | --- | --- |
+| Before | Presença de características problemáticas conhecidas, como controles sem nome acessível ou ausência de skip link interno | A barreira esperada foi detectada naquela página |
+| After | Presença e funcionamento das correções escolhidas para o estudo | O comportamento definido no teste foi observado |
+| axe-core | Regras automáticas aplicadas às duas páginas | Foi gerada uma triagem técnica para investigação |
+
+Por isso, as suítes Before funcionam como verificações de referência ou caracterização de barreiras. Se a W3C corrigir uma barreira da versão Before, o teste que esperava encontrá-la poderá falhar por uma mudança positiva. A palavra regressão fica reservada aos comportamentos acompanhados continuamente.
+
+## Métodos Usados
+
+| Método | Aplicação neste projeto |
+| --- | --- |
+| Avaliação heurística | Inspeção do formulário com princípios de usabilidade como guia para identificar possíveis problemas de interface. |
+| Percurso cognitivo | Análise passo a passo da tarefa de responder à pesquisa, considerando o que uma pessoa nova no site precisaria perceber e entender. |
+| Robot Framework Browser | Verificação repetível de elementos, nomes acessíveis e comportamentos definidos para as duas versões. Também apoia o registro de evidências da tarefa. |
+| axe-core | Execução de regras automáticas para indicar pontos que precisam de triagem e interpretação. |
+
+A inspeção foi feita pela autora. As verificações automatizadas cobrem condições específicas definidas nos testes. 
+
+## Conceitos Em Poucas Palavras
+
+**W3C:** World Wide Web Consortium, organização internacional que desenvolve padrões para a Web. Sua iniciativa WAI trabalha com padrões e materiais de apoio para acessibilidade.
+
+**WCAG 2.2:** Web Content Accessibility Guidelines, recomendações da W3C com critérios verificáveis para tornar conteúdo Web mais acessível. A demonstração BAD foi construída com referência à WCAG 2.0. Os critérios mencionados neste estudo são conferidos na WCAG 2.2.
+
+**axe-core:** motor de testes automáticos de acessibilidade para interfaces Web. Aqui ele é executado por meio de `@axe-core/playwright` para gerar resultados das duas páginas. Foi escolhido por permitir incorporar regras automáticas ao fluxo de testes e guardar os resultados para triagem.
+
+**Avaliação heurística:** inspeção da interface orientada por princípios de usabilidade. O registro explica a observação, o princípio relacionado e uma possível melhoria.
+
+**Percurso cognitivo:** inspeção dos passos de uma tarefa sob a perspectiva de alguém que usa a interface pela primeira vez. Em cada passo, a avaliadora examina se a ação necessária pode ser descoberta e se seu resultado pode ser compreendido.
+
+## Guia Dos Documentos
+
+| Documento | O que você encontrará |
+| --- | --- |
+| [Plano do estudo](docs/study-plan.md) | Pergunta, tarefa, escopo e limites da investigação. |
+| [Inspeção de usabilidade](docs/usability-inspection.md) | Avaliação heurística e percurso cognitivo das duas versões. |
+| [Achados de acessibilidade](docs/accessibility-findings.md) | Barreiras selecionadas, impactos possíveis e critérios relacionados. |
+| [Triagem do axe-core](docs/axe-triage.md) | Leitura dos resultados automáticos e pontos que exigem investigação. |
+| [Relatório do portfólio](docs/portfolio-report.md) | Síntese do método, dos achados e das recomendações. |
+| [Evidências selecionadas](docs/evidence/) | Capturas estáveis para navegação no GitHub. Os resultados completos continuam em `results/`. |
 
 ## Arquitetura
 
@@ -37,29 +78,29 @@ Test cases
   -> Playwright
 ```
 
-Os testes em `tests/` expressam comportamento verificavel. Locators e detalhes de interface ficam em `resources/pages/`. Fluxos do estudo ficam em `resources/flows/`. Configuracao de ambiente e URLs ficam em `config/` e `variables/runtime.py`.
+Os testes em `tests/` expressam comportamento verificável. Locators e detalhes de interface ficam em `resources/pages/`. Fluxos do estudo ficam em `resources/flows/`. Configuração de ambiente e URLs ficam em `config/` e `variables/runtime.py`.
 
 ## Estrutura Atual
 
 ```text
-config/                 configuracao do estudo W3C
-resources/common/       ciclo de browser, contexto e evidencias
-resources/pages/        locators e verificacoes da pagina Survey
+config/                 configuração do estudo W3C
+resources/common/       ciclo de browser, contexto e evidências
+resources/pages/        locators e verificações da página Survey
 resources/flows/        fluxos do estudo para before/after
-tests/accessibility/    suites Robot de acessibilidade separadas por before/after
-tests/usability/        suites Robot de usabilidade separadas por before/after
-docs/                   plano, triagem, achados e relatorio
-scripts/                execucao axe-core
-results/                relatorios gerados, nao versionados
+tests/accessibility/    suítes Robot de acessibilidade separadas por before/after
+tests/usability/        suítes Robot de usabilidade separadas por before/after
+docs/                   plano, triagem, achados, relatório e evidências selecionadas
+scripts/                execução axe-core
+results/                relatórios gerados, não versionados
 ```
 
-## Pre-requisitos
+## Pré-Requisitos
 
 - Python 3.12 ou superior.
 - Node.js 22, 24 ou 26 LTS.
 - Navegadores Playwright instalados via Browser Library.
 
-## Instalacao
+## Instalação
 
 Com `venv` e `pip`:
 
@@ -85,15 +126,15 @@ npm install
 npx playwright install chromium
 ```
 
-Se o comando `python` nao existir no seu PATH mesmo com a venv ativada, use explicitamente:
+Se o comando `python` não existir no seu PATH mesmo com a venv ativada, use explicitamente:
 
 ```powershell
 .\.venv\Scripts\python.exe -m robot --outputdir results/w3c --include accessibility tests/accessibility
 ```
 
-## Configuracao
+## Configuração
 
-O ambiente principal e `w3c`. Ele ja e o padrao em `variables/runtime.py`, mas pode ser definido explicitamente:
+O ambiente principal é `w3c`. Ele já é o padrão em `variables/runtime.py`, mas pode ser definido explicitamente:
 
 ```bash
 ENV=w3c
@@ -105,47 +146,47 @@ No PowerShell:
 $env:ENV = "w3c"
 ```
 
-As URLs avaliadas podem ser sobrescritas por `W3C_BEFORE_URL` e `W3C_AFTER_URL`, caso seja necessario apontar para uma copia controlada das paginas.
+As URLs avaliadas podem ser sobrescritas por `W3C_BEFORE_URL` e `W3C_AFTER_URL`, caso seja necessário apontar para uma cópia controlada das páginas.
 
-## Execucao Robot
+## Execução Robot
 
-Todas as verificacoes de acessibilidade:
+Todas as verificações de acessibilidade:
 
 ```bash
 python -m robot --outputdir results/w3c --include accessibility tests/accessibility
 ```
 
-Somente acessibilidade da versao com barreiras:
+Somente acessibilidade da versão com barreiras:
 
 ```bash
 python -m robot --outputdir results/w3c-before tests/accessibility/w3c_survey_before_accessibility.robot
 ```
 
-Somente acessibilidade da versao corrigida:
+Somente acessibilidade da versão corrigida:
 
 ```bash
 python -m robot --outputdir results/w3c-after tests/accessibility/w3c_survey_after_accessibility.robot
 ```
 
-Todas as verificacoes de usabilidade:
+Todas as verificações de usabilidade:
 
 ```bash
 python -m robot --outputdir results/usability tests/usability
 ```
 
-Somente usabilidade da versao com barreiras:
+Somente usabilidade da versão com barreiras:
 
 ```bash
 python -m robot --outputdir results/usability-before tests/usability/w3c_survey_before_usability.robot
 ```
 
-Somente usabilidade da versao corrigida:
+Somente usabilidade da versão corrigida:
 
 ```bash
 python -m robot --outputdir results/usability-after tests/usability/w3c_survey_after_usability.robot
 ```
 
-Execucao paralela:
+Execução paralela:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pabot.pabot --command .\.venv\Scripts\python.exe -m robot --end-command --processes 4 --outputdir results/project-parallel tests
@@ -153,23 +194,31 @@ Execucao paralela:
 
 ## Axe-Core
 
-O axe-core gera evidencia automatica complementar. Ele nao substitui avaliacao manual de teclado, foco, entendimento e contexto. A W3C ressalta que ferramentas nao conseguem verificar todos os aspectos automaticamente, exigem julgamento humano e podem produzir resultados falsos ou enganosos.
+O axe-core gera evidência automática complementar. Ele não substitui avaliação manual de teclado, foco, entendimento e contexto. A W3C ressalta que ferramentas não conseguem verificar todos os aspectos automaticamente, exigem julgamento humano e podem produzir resultados falsos ou enganosos.
 
 ```bash
 npm run a11y:axe
 ```
 
-Saidas:
+Saídas:
 
 - `results/axe/before.json`
 - `results/axe/after.json`
 - `results/axe/summary.md`
 
-Para falhar o comando quando houver violacoes:
+Para falhar o comando quando houver violações:
 
 ```bash
 AXE_FAIL_ON_VIOLATIONS=true npm run a11y:axe
 ```
+
+Use essa opção com cuidado na versão Before: ela pode fazer o comando falhar diante das barreiras que o estudo espera encontrar. Para triagem comparativa, a contagem precisa vir acompanhada de data, URL efetiva, versão da ferramenta e regras detectadas.
+
+## Evidências
+
+`results/` guarda relatórios completos, logs e capturas geradas localmente. Essa pasta não é versionada.
+
+`docs/evidence/` reúne poucas capturas selecionadas, estáveis e sem dados sensíveis para que quem navega pelo GitHub consiga ver exemplos do material usado na inspeção.
 
 ## Lint
 
@@ -184,34 +233,35 @@ python -m robocop check tests resources variables
 HEADLESS=false python -m robot --loglevel DEBUG --outputdir results/w3c --include accessibility tests/accessibility
 ```
 
-Evidencias Robot ficam em `results/`, incluindo `output.xml`, `log.html`, `report.html` e screenshots em falhas.
+Evidências Robot ficam em `results/`, incluindo `output.xml`, `log.html`, `report.html` e screenshots em falhas.
 
 ## Limites Do Estudo
 
-- A demonstracao W3C BAD foi criada com referencia a WCAG 2.0.
-- Antes de citar um criterio atual, conferir correspondencia com a WCAG 2.2.
-- Um resultado sem violacoes detectadas por ferramenta automatica deve ser descrito como `sem violacoes detectadas pela ferramenta`, nao como conformidade integral com WCAG.
-- O estudo inicial aprofunda quatro diferencas: labels, agrupamento semantico, teclado/foco e skip links.
-- Esta versao e um estudo pessoal apoiado por automacao, inspecao propria e triagem critica dos resultados.
+- A demonstração W3C BAD foi criada com referência à WCAG 2.0.
+- Antes de citar um critério atual, conferir correspondência com a WCAG 2.2.
+- Um resultado sem violações detectadas por ferramenta automática deve ser descrito como `sem violações detectadas pela ferramenta`, não como conformidade integral com WCAG.
+- O estudo inicial aprofunda quatro diferenças: labels, agrupamento semântico, teclado/foco e skip links.
+- Esta versão é um estudo pessoal apoiado por automação, inspeção própria e triagem crítica dos resultados.
+- As suítes Robot de usabilidade apoiam e registram evidências da inspeção. A execução delas, sozinha, não avalia se uma pessoa compreenderia a interface.
 
 ## CI
 
-O workflow `.github/workflows/tests.yml` executa lint, verificacoes W3C com Robot e axe-core em Pull Requests. Em `main` ou schedule, tambem executa suites `regression` via Pabot.
+O workflow `.github/workflows/tests.yml` executa lint, verificações W3C com Robot e axe-core em Pull Requests. Em `main` ou schedule, também executa suítes `regression` via Pabot.
 
-## Como Criar Novas Verificacoes
+## Como Criar Novas Verificações
 
-1. Identifique a barreira ou comportamento observavel.
+1. Identifique a barreira ou comportamento observável.
 2. Registre o achado em `docs/accessibility-findings.md`.
-3. Crie ou atualize keyword de pagina em `resources/pages/`.
+3. Crie ou atualize keyword de página em `resources/pages/`.
 4. Orquestre o fluxo do estudo em `resources/flows/`.
-5. Escreva cenario em `tests/` sem locators diretos.
-6. Rode lint, Robot e, quando aplicavel, axe-core.
+5. Escreva cenário em `tests/` sem locators diretos.
+6. Rode lint, Robot e, quando aplicável, axe-core.
 
-## Boas Praticas
+## Boas Práticas
 
 - Use assertions retryable do Browser Library em vez de `Sleep`.
-- Mantenha testes independentes e executaveis em qualquer ordem.
-- Nao use SeleniumLibrary.
-- Evite XPath absoluto, seletores posicionais e classes CSS dinamicas.
+- Mantenha testes independentes e executáveis em qualquer ordem.
+- Não use SeleniumLibrary.
+- Evite XPath absoluto, seletores posicionais e classes CSS dinâmicas.
 - Diferencie achado automatizado de achado manual.
-- Nao trate axe-core como prova completa de conformidade WCAG.
+- Não trate axe-core como prova completa de conformidade WCAG.

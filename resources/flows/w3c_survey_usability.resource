@@ -26,9 +26,12 @@ Entao A Versao Corrigida Deve Apoiar A Avaliacao Heuristica
 Quando Respondo A Pesquisa Sobre Parques Na Versao Com Barreiras
     Responder Pesquisa Com Barreiras Por Seletores Tecnicos
     Capturar Tela Do Formulario    usability-before-filled
+    Percurso Cognitivo Com Barreiras Deve Manter Problemas De Orientacao
+    Enviar Pesquisa Com Barreiras
+    Capturar Tela Da Pagina    usability-before-submit-result
 
 Entao O Percurso Cognitivo Deve Evidenciar Barreiras De Orientacao
-    Percurso Cognitivo Com Barreiras Deve Manter Problemas De Orientacao
+    Envio Com Barreiras Deve Levar A Resultado Sem Confirmacao Clara
 
 Quando Escolho Um Parque Na Versao Corrigida
     Escolher Parque Corrigido Para Percurso Cognitivo
@@ -50,6 +53,7 @@ Entao Os Dados Da Newsletter Devem Ficar Claros
 
 Quando Finalizo A Pesquisa Na Versao Corrigida
     Enviar Pesquisa Corrigida
+    Capturar Tela Da Pagina    usability-after-submit-result
 
 Entao O Termino Da Tarefa Deve Levar Ao Resultado Esperado
     Envio Deve Manter A Pessoa No Resultado Esperado
@@ -64,6 +68,7 @@ Quando Respondo A Pesquisa Sobre Parques Na Versao Corrigida
     Dados Da Newsletter Devem Ficar Perceptiveis
     Capturar Tela Do Formulario    usability-after-newsletter-filled
     Enviar Pesquisa Corrigida
+    Capturar Tela Da Pagina    usability-after-submit-result
 
 Entao O Percurso Cognitivo Deve Concluir Com Resultado Esperado
     Entao O Termino Da Tarefa Deve Levar Ao Resultado Esperado

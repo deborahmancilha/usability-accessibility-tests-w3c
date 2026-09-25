@@ -43,7 +43,9 @@ O recorte e intencionalmente pequeno para permitir explicar causa, impacto e evi
 | Preencher campos da versao corrigida | Os controles aceitam as entradas esperadas |
 | Percorrer o formulario por teclado | A sequencia definida pode ser operada e o foco pode ser identificado |
 
-A suite tambem mantem um quinto cenario comparativo para registrar objetivamente barreiras da versao before.
+A suite tambem mantem cenarios de referencia para registrar objetivamente barreiras da versao before. Nesses casos, um teste aprovado significa que a barreira esperada foi detectada, nao que a pagina before esteja aprovada em acessibilidade.
+
+As suites de usabilidade em Robot registram telas e percorrem a tarefa para apoiar a inspecao. A avaliacao heuristica e o percurso cognitivo continuam documentados em `docs/usability-inspection.md`, pois a execucao automatizada, sozinha, nao avalia compreensao humana da interface.
 
 ## Roteiro Pessoal Da Tarefa
 
